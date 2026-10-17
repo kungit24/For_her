@@ -1,0 +1,401 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>A Lamp Left On</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&family=Caveat:wght@500;700&display=swap">
+<style>
+/* Layout: a bubbly "love letter" card with tape and sticker-style buttons, floating hearts behind; shades of pink (single light look by choice) */
+:root{
+  --bg:#ffe4ec; --bg-2:#ffd1df; --paper:#fff7fa; --pink:#ff8fb1; --hot:#ff5c93; --rose:#ffc2d4;
+  --night:#7a1f45; --blush:#ff8fb1; --ink:#5e1838; --muted:#a3547a; --line:#ffb3c9; --shadow:#e86a97;
+  --lamp:#ff5c93; --lamp-soft:#c2386d; --night-3:#ffe9f0;
+  --display:"Fredoka","Nunito",system-ui,sans-serif; --body:"Nunito",system-ui,sans-serif; --hand:"Caveat","Comic Sans MS",cursive;
+  color-scheme:light;
+}
+html,body{min-height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;
+  background-image:radial-gradient(var(--rose) 1.5px,transparent 1.6px);background-size:22px 22px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:grid;place-items:center;overflow-x:hidden}
+#glow{position:fixed;inset:0;pointer-events:none;background:radial-gradient(70vmax 50vmax at 50% 0%,rgba(255,255,255,.75),transparent 70%)}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:5}
+main{position:relative;width:100%;max-width:470px;padding-block:40px 28px}
+.card{position:relative;background:var(--paper);border:2.5px solid var(--pink);border-radius:30px;padding:34px 22px 26px;box-shadow:6px 7px 0 var(--pink)}
+.card::before{content:"";position:absolute;top:-14px;left:50%;width:110px;height:28px;transform:translateX(-50%) rotate(-3deg);background:rgba(255,143,177,.55);border-radius:4px}
+.card::after{content:"🌹";position:absolute;top:-26px;right:14px;font-size:2.6rem;transform:rotate(18deg)}
+.card .rose-l{position:absolute;bottom:-20px;left:12px;font-size:2.2rem;transform:rotate(-22deg);pointer-events:none}
+.bouquet{font-size:2.4rem;letter-spacing:-6px;text-align:center;line-height:1}
+.step{display:flex;flex-direction:column;gap:16px;animation:in .45s cubic-bezier(.3,1.5,.6,1)}
+@keyframes in{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-6px) rotate(-2deg)}75%{transform:translateX(6px) rotate(2deg)}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.eyebrow{font-family:var(--hand);font-size:1.6rem;color:var(--hot);line-height:1;align-self:flex-start;background:var(--bg);padding:2px 12px 4px;border-radius:99px;transform:rotate(-2deg)}
+h1,h2{font-family:var(--display);font-weight:600;margin:0;text-wrap:balance;line-height:1.15;color:var(--ink)}
+h1{font-size:2rem} h2{font-size:1.55rem}
+p{margin:0;color:var(--muted)}
+.note{font-family:var(--hand);font-size:1.5rem;color:var(--hot);line-height:1.2;min-height:1.2em}
+.opts{display:grid;gap:10px}
+button{font:inherit;font-weight:600;cursor:pointer;border-radius:18px;border:2px solid var(--line);background:#fff;color:var(--ink);padding:12px 16px;text-align:left;box-shadow:0 4px 0 var(--line);transition:transform .15s,box-shadow .15s,background .2s,border-color .2s}
+button:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 0 var(--pink);border-color:var(--pink)}
+button:active:not(:disabled){transform:translateY(3px);box-shadow:0 1px 0 var(--pink)}
+button:focus-visible{outline:3px solid var(--hot);outline-offset:2px}
+button.picked{background:var(--bg-2);border-color:var(--hot);box-shadow:0 4px 0 var(--hot)}
+button:disabled{cursor:default}
+.go{background:var(--hot);color:#fff;border-color:var(--hot);box-shadow:0 5px 0 var(--shadow);font-family:var(--display);font-weight:600;text-align:center;align-self:flex-start;padding:12px 26px;border-radius:99px}
+.go:hover:not(:disabled){background:var(--hot);box-shadow:0 7px 0 #c2386d}
+.vibe{display:grid;gap:2px}
+.vibe b{font-weight:800}.vibe small{color:var(--muted);font-size:.85rem;line-height:1.3;font-weight:500}
+.dots{display:flex;gap:7px;justify-content:center;margin-top:20px}
+.dots i{font-style:normal;font-size:.8rem;color:var(--line);line-height:1}
+.dots i::before{content:"♥"} .dots i.on{color:var(--hot)}
+ul.reasons{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+ul.reasons li{font-family:var(--hand);font-size:1.45rem;color:var(--ink);line-height:1.2;opacity:0;animation:in .6s ease forwards;background:var(--bg);border-radius:14px;padding:8px 14px}
+ul.reasons li:nth-child(odd){transform:rotate(-1deg)} ul.reasons li:nth-child(even){transform:rotate(1deg)}
+.meter{display:grid;gap:8px}
+.meter output{font-family:var(--display);font-weight:700;font-size:2.6rem;color:var(--hot);font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--hot);height:28px}
+.ask{position:relative;height:190px;border-radius:20px;background:var(--bg);border:2px dashed var(--line)}
+#yes{position:absolute;left:10px;top:10px;background:var(--hot);color:#fff;border-color:var(--hot);box-shadow:0 5px 0 var(--shadow);font-family:var(--display);text-align:center;padding:14px 30px;border-radius:99px;transform-origin:top left;transition:transform .25s;z-index:2;animation:bob 1.8s ease-in-out infinite}
+#no{position:absolute;text-align:center;padding:10px 18px;white-space:nowrap;border-radius:99px;transition:left .22s,top .22s,transform .22s,opacity .3s}
+.shake{animation:shake .35s}
+.cal{border:2px solid var(--line);border-radius:20px;padding:12px;background:#fff}
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.cal-head b{font-family:var(--display);font-weight:600;font-size:1.15rem}
+.cal-head button{padding:4px 14px;text-align:center;border-radius:99px;box-shadow:0 3px 0 var(--line)}
+.cal-head button:disabled{opacity:.3}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+.grid .dow{font-size:.72rem;font-weight:800;letter-spacing:.08em;color:var(--muted);padding-block:4px}
+.grid button{padding:0;aspect-ratio:1;max-width:100%;text-align:center;border-radius:50%;border:2px solid transparent;box-shadow:none;font-variant-numeric:tabular-nums;font-size:.95rem}
+.grid button:hover:not(:disabled){background:var(--bg);box-shadow:none;transform:scale(1.08);border-color:var(--line)}
+.grid button:disabled{opacity:.25}
+.grid button.picked{background:var(--hot);color:#fff;border-color:var(--hot);box-shadow:none;font-weight:800}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips button{padding:7px 14px;border-radius:99px;font-size:.95rem;box-shadow:0 3px 0 var(--line)}
+.ticket{position:relative;background:var(--bg);border:2px dashed var(--hot);border-radius:20px;padding:16px;display:grid;gap:4px}
+.ticket>b{font-family:var(--display);font-weight:600;color:var(--hot);font-size:1.2rem;margin-bottom:4px}
+.row{display:flex;justify-content:space-between;gap:12px;border-bottom:1.5px dotted var(--line);padding-block:7px}
+.row:last-child{border-bottom:none}
+.row span:first-child{color:var(--muted);font-size:.75rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding-top:2px}
+.row span:last-child{text-align:right;min-width:0;font-weight:600}
+.count{font-family:var(--display);font-weight:700;font-size:3.4rem;color:var(--hot);line-height:1;font-variant-numeric:tabular-nums}
+.toast{font-size:.9rem;font-weight:700;color:var(--hot)}
+textarea{width:100%;box-sizing:border-box;font:inherit;font-size:.9rem;background:var(--night-3);color:var(--ink);border:2px solid var(--line);border-radius:14px;padding:10px;resize:none}
+
+/* open-when letters */
+.letters{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.env{display:grid;gap:4px;justify-items:center;text-align:center;padding:14px 10px;font-size:.9rem;line-height:1.25}
+.env .ico{font-size:1.8rem;line-height:1}
+.env.read{opacity:.6}
+.letter{background:var(--bg);border-radius:18px;padding:14px 16px;font-family:var(--hand);font-size:1.45rem;line-height:1.2;color:var(--ink);animation:in .4s cubic-bezier(.3,1.5,.6,1)}
+/* hug */
+#hug{position:relative;overflow:hidden;align-self:center;width:180px;height:180px;border-radius:50%;text-align:center;font-family:var(--display);font-size:1.2rem;display:grid;place-items:center;
+  user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:none;background:#fff;border:3px solid var(--pink);box-shadow:0 6px 0 var(--pink)}
+#hug .fill{position:absolute;left:0;right:0;bottom:0;height:0;background:var(--rose);transition:height .1s linear}
+#hug span{position:relative}
+#hug.done{background:var(--hot);color:#fff;border-color:var(--hot)}
+/* coupons */
+.coupons{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.coupon{position:relative;border:2px dashed var(--hot);border-radius:16px;background:#fff;min-height:110px;display:grid;place-items:center;text-align:center;padding:10px;font-weight:700;line-height:1.25;font-size:.92rem;overflow:hidden}
+.coupon canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:grab;transition:opacity .5s}
+/* rating */
+.stars{position:relative;height:130px;background:var(--bg);border:2px dashed var(--line);border-radius:20px}
+.star{position:absolute;font-size:2.1rem;padding:4px 6px;line-height:1;border-radius:12px;background:transparent;border:none;box-shadow:none;transition:left .22s,top .22s,transform .22s}
+.star:hover:not(:disabled){box-shadow:none;transform:scale(1.15)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important} ul.reasons li{opacity:1}}
+</style></head><body>
+
+<div id="glow"></div><canvas id="fx"></canvas>
+<main><div class="card"><span class="rose-l" aria-hidden="true">🌹</span><div id="card"></div></div><div class="dots" id="dots"></div></main>
+
+<script>
+const S={}; let i=0;
+const card=document.getElementById('card'), dots=document.getElementById('dots');
+const $=id=>document.getElementById(id);
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const EARLIEST=new Date(2026,10,16); // first pickable day: Nov 16, 2026
+const LAST_MONTH=new Date(2027,5,1);  // calendar runs through June 2027
+
+const NOTES={
+ heart:['A small cloud is still a cloud. You don\'t have to pretend it\'s sunny.','Then we go slow tonight. I\'m right here on the other end of this.','Thank you for telling me. Miles away or not, you don\'t carry it alone.'],
+ lucky:['Incorrect. The answer is me. But I\'ll allow it.','Bold of you. Still wrong, it\'s me. Cute attempt though.','Nice try. This quiz is rigged and I am the winner.']
+};
+
+const steps=[
+ ()=>`<div class="step"><div class="bouquet" aria-hidden="true">🌹🌹🌹</div><div class="eyebrow">hey, you</div><h1>I heard today was a heavy one.</h1>
+   <p>I hate that I can't be there to hug you right now. So I built you this instead. It takes two minutes and there are no wrong answers. Mostly.</p>
+   <button class="go" onclick="next()">Open it</button></div>`,
+
+ ()=>choice('First things first','How is your heart doing right now?','heart',['A small rain cloud','Wobbly and tired','Honestly, really heavy']),
+
+ ()=>`<div class="step"><div class="eyebrow">quick science experiment</div><h2>How much do you miss me?</h2>
+   <div class="meter"><output id="mv">50%</output>
+   <input type="range" id="miss" min="0" max="100" value="50" aria-label="How much do you miss me">
+   </div><div class="note" id="note">Slide it. Be honest.</div>
+   <button class="go" id="cont" hidden onclick="next()">Next</button></div>`,
+
+ ()=>choice('pop quiz','Who is the luckiest person in this relationship?','lucky',['Me','Obviously me','Me, and it\'s not close']),
+
+ ()=>{const r=['You are so much stronger than you feel today.','Bad days don\'t get to decide who you are.','Distance is temporary. You and me aren\'t.','I\'m proud of you, even on the days you aren\'t.','Every mile between us is one I\'d drive twice.'];
+   return `<div class="step"><div class="eyebrow">before the big question</div><h2>A few things I need you to know</h2>
+   <ul class="reasons">${r.map((t,k)=>`<li style="animation-delay:${.3+k*.6}s">${t}</li>`).join('')}</ul>
+   <button class="go" onclick="next()">Okay, okay. What's the question?</button></div>`},
+
+ ()=>{const L=[['💌','Open when you miss me','Close your eyes. I\'m holding your hand right now. Also check your phone, I probably just texted you.'],
+     ['🌙','Open when you can\'t sleep','Count the days until our date instead of sheep. Then text me. I\'ll stay up with you.'],
+     ['😂','Open when you need a laugh','Somewhere out there, right now, I am losing a fight to a fitted sheet.'],
+     ['🌧️','Open when today was hard','You\'ve survived 100% of your hard days so far. That\'s a perfect record.']];
+   window._L=L;
+   return `<div class="step"><div class="eyebrow">you've got mail</div><h2>I left you some letters</h2><p>Open as many as you want. They'll still be here next time.</p>
+   <div class="letters">${L.map((l,k)=>`<button class="env" onclick="openLetter(${k},this)"><span class="ico">${l[0]}</span>${l[1]}</button>`).join('')}</div>
+   <div id="letter"></div><button class="go" id="cont" hidden onclick="next()">Next</button></div>`},
+
+ ()=>`<div class="step"><div class="eyebrow">long-distance hug</div><h2>I can't hug you from here. Or can I?</h2>
+   <p>Press and hold the circle until it's full.</p>
+   <button id="hug"><div class="fill" id="hugfill"></div><span id="hugtxt">Hold me</span></button>
+   <div class="note" id="note"></div><button class="go" id="cont" hidden onclick="next()">Next</button></div>`,
+
+ ()=>`<div class="step"><div class="eyebrow">the important part</div><h2>When I see you again, will you go on a date with me?</h2>
+   <p id="askp">Choose carefully. One of these buttons is shy.</p>
+   <div class="ask" id="ask"><button id="yes" onclick="saidYes()">Yes</button><button id="no">No</button></div></div>`,
+
+ ()=>{const v=[['Dinner + dessert','A real dinner, then a dessert we split (I get the last bite).'],
+     ['Sunset picnic','Blanket, snacks, and nowhere to be.'],
+     ['Blanket fort movie night','Pillows, popcorn, and your pick of movie.'],
+     ['Day of adventures','Coffee, wandering, and something we\'ve never tried.']];
+   return `<div class="step"><div class="eyebrow">you said yes!!</div><h2>Pick the kind of date</h2>
+   <div class="opts">${v.map(o=>`<button class="vibe" onclick="pickVibe(this,'${o[0]}')"><b>${o[0]}</b><small>${o[1]}</small></button>`).join('')}</div>
+   <div class="note" id="note"></div><button class="go" id="cont" hidden onclick="next()">Now pick a day</button></div>`},
+
+ ()=>`<div class="step"><div class="eyebrow">save the date</div><h2>Which day works for you?</h2>
+   <p>Any day after November 15. Pick the one you want and I'll make it happen.</p>
+   <div class="cal"><div class="cal-head"><button id="prev" aria-label="Previous month">‹</button><b id="mlabel"></b><button id="nextm" aria-label="Next month">›</button></div>
+   <div class="grid" id="grid"></div></div>
+   <div><p style="margin-bottom:8px">And what time of day?</p><div class="chips" id="times">
+   ${['Morning','Afternoon','Evening','All day, obviously'].map(t=>`<button onclick="pickTime(this)">${t}</button>`).join('')}</div></div>
+   <div class="note" id="note"></div>
+   <button class="go" id="cont" disabled style="opacity:.4" onclick="finish()">Lock it in</button></div>`,
+];
+
+function choice(eb,q,key,opts){
+  return `<div class="step"><div class="eyebrow">${eb}</div><h2>${q}</h2><div class="opts">${
+    opts.map((o,k)=>`<button onclick="pick('${key}',${k},this)">${o}</button>`).join('')}</div>
+    <div class="note" id="note"></div><button class="go" id="cont" hidden onclick="next()">Next</button></div>`;
+}
+function pick(key,k,el){
+  card.querySelectorAll('.opts button').forEach(b=>b.classList.remove('picked')); el.classList.add('picked');
+  S[key]=el.textContent; $('note').textContent=NOTES[key][k]; $('cont').hidden=false;
+}
+function pickVibe(el,v){
+  card.querySelectorAll('.opts button').forEach(b=>b.classList.remove('picked')); el.classList.add('picked');
+  S.vibe=v; $('note').textContent='Excellent taste. Just like your taste in boyfriends.'; $('cont').hidden=false;
+}
+
+function render(){
+  card.innerHTML=steps[i]();
+  dots.innerHTML=steps.map((_,k)=>`<i class="${k<=i?'on':''}"></i>`).join('');
+  if(i===2) setupMiss();
+  if(i===6) setupHug();
+  if(i===7) setupNo();
+  if(i===9) setupCal();
+}
+function next(){ if(i<steps.length-1){i++;render();} }
+
+/* ---- miss-me slider: anything under 100 gets corrected ---- */
+function setupMiss(){
+  const r=$('miss'),o=$('mv'),n=$('note');
+  const say=['Hmm. Suspiciously low.','Error: that answer is incorrect.','I\'m going to pretend I didn\'t see that.','The slider is broken. Try again.'];
+  let tries=0;
+  r.addEventListener('input',()=>{o.textContent=r.value+'%'; if(r.value<100) n.textContent=r.value<50?'Excuse me??':'Getting warmer…';});
+  r.addEventListener('change',()=>{
+    if(+r.value<100){
+      n.textContent=say[Math.min(tries++,say.length-1)];
+      card.querySelector('.meter').classList.remove('shake'); void card.offsetWidth; card.querySelector('.meter').classList.add('shake');
+      let v=+r.value; const t=setInterval(()=>{v=Math.min(100,v+4);r.value=v;o.textContent=v+'%';if(v>=100){clearInterval(t);overflow();}},25);
+    } else overflow();
+  });
+  function overflow(){
+    // number keeps climbing past the slider
+    let v=100; n.textContent='Wait, it\'s still going…';
+    const t=setInterval(()=>{v=Math.round(v*1.35+7);o.textContent=v.toLocaleString()+'%';
+      if(v>99999){clearInterval(t);o.textContent='∞%';n.textContent='Same. Exactly the same. Maybe more.';S.miss='∞%';$('cont').hidden=false;}},70);
+    r.disabled=true;
+  }
+}
+
+/* ---- the shy No button ---- */
+let noCount=0;
+function setupNo(){
+  const no=$('no'),box=$('ask'),y=$('yes'),p=$('askp');
+  const place=()=>{no.style.left=Math.max(0,box.clientWidth-no.offsetWidth-8)+'px';no.style.top='70px';};
+  place();
+  const lines=['No','Are you sure?','Really sure?','Think about the snacks','Pretty please?','I made you a whole website','You\'re breaking my heart','The yes button is RIGHT there','Okay, this button gave up'];
+  const quips=['','Wrong button, try the pink one.','It\'s scared of you.','You can\'t catch it.','It runs faster than me to the airport.','Yes is getting bigger. Just saying.','Okay you\'re just doing this for fun now.','I can do this all day.',''];
+  const run=e=>{ if(e){e.preventDefault();e.stopPropagation();}
+    noCount++;
+    if(noCount>=lines.length-1){ // final form: No turns into Yes
+      no.textContent='Fine. Yes.'; no.style.transform='scale(1)'; no.style.background='var(--hot)'; no.style.color='#fff'; no.style.borderColor='var(--hot)';
+      no.onclick=saidYes; no.replaceWith(no.cloneNode(true)); const n2=$('no'); n2.onclick=saidYes;
+      p.textContent='See? Even the No button wants to go.'; return; }
+    const ys=Math.min(2.1,1+noCount*.15); y.style.transform=`scale(${ys})`;
+    const yw=y.offsetWidth*ys, yh=y.offsetHeight*ys;
+    let L,T,guard=0;
+    do{ L=Math.random()*Math.max(box.clientWidth-no.offsetWidth,0); T=Math.random()*Math.max(box.clientHeight-no.offsetHeight,0); guard++; }
+    while(guard<30 && L<yw+6 && T<yh+6);
+    no.style.left=L+'px'; no.style.top=T+'px';
+    no.textContent=lines[noCount]; no.style.transform=`scale(${Math.max(.6,1-noCount*.05)}) rotate(${(Math.random()-.5)*16}deg)`;
+    if(quips[noCount]) p.textContent=quips[noCount];
+  };
+  no.addEventListener('pointerenter',e=>{ if(e.pointerType==='mouse') run(e); });
+  no.addEventListener('pointerdown',run);
+  no.addEventListener('click',e=>e.preventDefault());
+}
+function saidYes(){ S.tries=noCount; burst(innerWidth/2,innerHeight/2,60); next(); }
+
+/* ---- calendar ---- */
+let view=new Date(2026,10,1);
+function setupCal(){
+  $('prev').onclick=()=>{view=new Date(view.getFullYear(),view.getMonth()-1,1);drawCal();};
+  $('nextm').onclick=()=>{view=new Date(view.getFullYear(),view.getMonth()+1,1);drawCal();};
+  drawCal();
+}
+function drawCal(){
+  $('mlabel').textContent=MONTHS[view.getMonth()]+' '+view.getFullYear();
+  $('prev').disabled=view<=new Date(2026,10,1);
+  $('nextm').disabled=view>=LAST_MONTH;
+  const g=$('grid'); const first=view.getDay(); const days=new Date(view.getFullYear(),view.getMonth()+1,0).getDate();
+  let h=['S','M','T','W','T','F','S'].map(d=>`<div class="dow">${d}</div>`).join('');
+  for(let k=0;k<first;k++) h+='<div></div>';
+  for(let d=1;d<=days;d++){
+    const dt=new Date(view.getFullYear(),view.getMonth(),d);
+    const sel=S.date&&+S.date===+dt;
+    h+=`<button ${dt<EARLIEST?'disabled':''} class="${sel?'picked':''}" onclick="pickDay(${+dt},this)" aria-label="${MONTHS[dt.getMonth()]} ${d}">${d}</button>`;
+  }
+  g.innerHTML=h;
+}
+const dayNotes=['Ooh, good choice.','Circling it in red pen right now.','That day just became my favorite day.','Locked in my heart. And my calendar.'];
+function pickDay(ts,el){
+  S.date=new Date(ts); $('grid').querySelectorAll('button').forEach(b=>b.classList.remove('picked')); el.classList.add('picked');
+  const r=el.getBoundingClientRect(); burst(r.left+r.width/2,r.top+r.height/2,12);
+  $('note').textContent=dayNotes[Math.floor(Math.random()*dayNotes.length)]; ready();
+}
+function pickTime(el){ $('times').querySelectorAll('button').forEach(b=>b.classList.remove('picked')); el.classList.add('picked'); S.time=el.textContent; ready(); }
+function ready(){ const c=$('cont'); const ok=S.date&&S.time; c.disabled=!ok; c.style.opacity=ok?1:.4; }
+
+/* ---- final ticket ---- */
+function fmt(d){return d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});}
+function finish(){
+  dots.innerHTML='';
+  const now=new Date(); now.setHours(0,0,0,0);
+  const days=Math.max(0,Math.round((S.date-now)/864e5));
+  const summary=`It's a date! ♡\n${S.vibe}\n${fmt(S.date)} (${S.time})\nI miss you: ${S.miss||'∞%'}\nTimes I tried to click No: ${S.tries}`;
+  card.innerHTML=`<div class="step"><div class="eyebrow">it's official</div><h1>You just made my whole week.</h1>
+   <div><div class="count">${days}</div><p>days until I get to see your face</p></div>
+   <div class="ticket"><b>Admit two: you and me 🌹</b>
+    <div class="row"><span>The plan</span><span>${S.vibe}</span></div>
+    <div class="row"><span>The day</span><span>${fmt(S.date)}</span></div>
+    <div class="row"><span>When</span><span>${S.time}</span></div>
+    <div class="row"><span>Dress code</span><span>Whatever is comfiest</span></div>
+    <div class="row"><span>Included</span><span>Roses. Obviously.</span></div>
+    <div class="row"><span>Cost to you</span><span>Zero. Just show up.</span></div>
+    <div class="row"><span>Times you tried No</span><span>${S.tries}${S.tries?' (I saw that)':''}</span></div></div>
+   <p>Send me your answers so I can start planning:</p>
+   <button class="go" id="copy">Copy my answers</button>
+   <textarea id="sum" rows="5" readonly hidden></textarea>
+   <div class="toast" id="toast"></div>
+   <p class="note">Or just screenshot this. Either way, I can't wait. ♡</p>
+   <button class="go" onclick="coupons()">Wait, there's more 🎁</button></div>`;
+  $('copy').onclick=()=>{
+    const t=$('sum'); t.value=summary;
+    const fallback=()=>{t.hidden=false;t.focus();t.select();$('toast').textContent='Copy the text above and paste it to him.';};
+    try{ navigator.clipboard.writeText(summary).then(()=>{$('toast').textContent='Copied! Now paste it in your chat with him.';},fallback);}catch(e){fallback();}
+  };
+  burst(innerWidth/2,innerHeight/3,80);
+}
+
+
+/* ---- open-when letters ---- */
+function openLetter(k,el){ el.classList.add('read'); el.querySelector('.ico').textContent='💗';
+  $('letter').innerHTML=`<div class="letter">${window._L[k][2]}</div>`; $('cont').hidden=false; }
+
+/* ---- hold-to-hug ---- */
+function setupHug(){
+  const b=$('hug'),f=$('hugfill'),t=$('hugtxt'),n=$('note'); let p=0,timer=null,done=false;
+  const msgs=['Hold me','Squeezing…','Tighter…','Almost…','So close…'];
+  const start=e=>{e.preventDefault(); if(done||timer) return;
+    timer=setInterval(()=>{p+=2.5; f.style.height=p+'%'; t.textContent=msgs[Math.min(4,Math.floor(p/20))];
+      if(p>=100){clearInterval(timer);timer=null;done=true;b.classList.add('done');t.textContent='Hug delivered';
+        const r=b.getBoundingClientRect(); burst(r.left+r.width/2,r.top+r.height/2,50);
+        n.textContent='Hug successfully delivered across the miles. Refills are unlimited.'; $('cont').hidden=false;}},50);};
+  const stop=()=>{ if(done) return; clearInterval(timer); timer=null;
+    if(p>0){n.textContent='Hey, I wasn\'t done hugging you. Hold longer.';} p=0; f.style.height='0%'; t.textContent='Hold me';};
+  b.addEventListener('pointerdown',start); b.addEventListener('pointerup',stop); b.addEventListener('pointerleave',stop); b.addEventListener('pointercancel',stop);
+  b.addEventListener('contextmenu',e=>e.preventDefault());
+}
+
+/* ---- scratch-off coupons ---- */
+function coupons(){
+  const C=['One back massage, redeemable on date day','You pick the movie. No complaints. (I\'ll try)','Breakfast in bed, cooked by me','One win in any argument, no questions asked'];
+  card.innerHTML=`<div class="step"><div class="eyebrow">bonus round</div><h2>Scratch off your coupons</h2>
+   <p>Rub each one with your finger to see what you won.</p>
+   <div class="coupons">${C.map(c=>`<div class="coupon">${c}<canvas></canvas></div>`).join('')}</div>
+   <div class="note" id="note"></div><button class="go" id="cont" hidden onclick="rate()">One last thing</button></div>`;
+  let revealed=0;
+  card.querySelectorAll('.coupon canvas').forEach(cv=>{
+    const r=cv.getBoundingClientRect(),d=devicePixelRatio||1; cv.width=r.width*d; cv.height=r.height*d;
+    const g=cv.getContext('2d'); g.scale(d,d);
+    g.fillStyle='#ff8fb1'; g.fillRect(0,0,r.width,r.height);
+    g.fillStyle='#fff'; g.font='600 15px Fredoka, Nunito, sans-serif'; g.textAlign='center';
+    g.fillText('scratch me ♥',r.width/2,r.height/2+5);
+    for(let k=0;k<14;k++){g.globalAlpha=.25;g.fillText('🌹',Math.random()*r.width,Math.random()*r.height);} g.globalAlpha=1;
+    g.globalCompositeOperation='destination-out';
+    let down=false,done=false;
+    const scratch=e=>{ if(!down||done) return; e.preventDefault(); const b=cv.getBoundingClientRect();
+      g.beginPath(); g.arc(e.clientX-b.left,e.clientY-b.top,16,0,7); g.fill();
+      const px=g.getImageData(0,0,cv.width,cv.height).data; let clear=0; for(let q=3;q<px.length;q+=64) if(px[q]===0) clear++;
+      if(clear/(px.length/64)>.45){done=true;cv.style.opacity=0;setTimeout(()=>cv.remove(),500);burst(e.clientX,e.clientY,15);
+        if(++revealed===C.length){$('note').textContent='All yours. No expiration date.';$('cont').hidden=false;}
+        else if(revealed===1) $('note').textContent='Keep going, there are more!';}};
+    cv.addEventListener('pointerdown',e=>{down=true;cv.setPointerCapture(e.pointerId);scratch(e);});
+    cv.addEventListener('pointermove',scratch);
+    cv.addEventListener('pointerup',()=>down=false); cv.addEventListener('pointercancel',()=>down=false);
+  });
+}
+
+/* ---- rate my effort: only 5 stars allowed ---- */
+function rate(){
+  card.innerHTML=`<div class="step"><div class="eyebrow">customer feedback</div><h2>How would you rate my effort today?</h2>
+   <p id="ratep">Be honest. (Please be nice.)</p>
+   <div class="stars" id="stars">${[1,2,3,4,5].map(n=>`<button class="star" data-n="${n}" aria-label="${n} star${n>1?'s':''}">⭐</button>`).join('')}</div>
+   <div class="note" id="note"></div></div>`;
+  const box=$('stars'),stars=[...box.querySelectorAll('.star')],p=$('ratep');
+  const lay=()=>{const w=box.clientWidth; stars.forEach((b,k)=>{b.style.left=(w/2-125+k*50)+'px';b.style.top='38px';});}; lay();
+  const quips=['1 star? Absolutely not.','2 stars is illegal here.','3 stars? I made a whole website!','4 is close. Not close enough.'];
+  let tries=0;
+  stars.forEach(b=>{const n=+b.dataset.n;
+    if(n<5){const run=e=>{e.preventDefault();tries++;
+        b.style.left=Math.random()*(box.clientWidth-50)+'px';b.style.top=Math.random()*(box.clientHeight-50)+'px';
+        b.style.transform=`rotate(${(Math.random()-.5)*60}deg) scale(.8)`; p.textContent=quips[n-1];};
+      b.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse')run(e);}); b.addEventListener('pointerdown',run); b.addEventListener('click',e=>e.preventDefault());}
+    else b.addEventListener('click',()=>{
+      stars.forEach(x=>{x.style.transform='scale(1.2)';}); lay();
+      burst(innerWidth/2,innerHeight/2,70);
+      card.innerHTML=`<div class="step"><div class="bouquet" aria-hidden="true">🌹🌹🌹</div><div class="eyebrow">⭐⭐⭐⭐⭐</div>
+       <h1>Five stars! Thank you for your feedback.</h1>
+       <p>${tries?`You tried to give me fewer stars ${tries} time${tries>1?'s':''}. I'm choosing to ignore that.`:'A flawless review. Just like you.'}</p>
+       <p class="note">Now go get some water, wrap up in a blanket, and remember that someone far away loves you very much. ♡</p></div>`;
+    });
+  });
+}
+/* ---- stars + heart bursts ---- */
+const c=$('fx'),x=c.getContext('2d');let P=[],hearts=[];
+function size(){c.width=innerWidth;c.height=innerHeight;P=Array.from({length:22},()=>({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*14+10,t:Math.random()*6,v:Math.random()*.35+.15}));}
+size(); addEventListener('resize',size);
+const still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function burst(cx,cy,n){ if(still) return; for(let k=0;k<n;k++)hearts.push({x:cx,y:cy,vx:(Math.random()-.5)*9,vy:-Math.random()*8-2,a:1,s:Math.random()*12+8,c:['#ff5c93','#ff8fb1','#ffc2d4'][Math.floor(Math.random()*3)],r:Math.random()<.35});}
+function loop(t){x.clearRect(0,0,c.width,c.height);
+  P.forEach(p=>{if(!still){p.y-=p.v;if(p.y<-30){p.y=c.height+30;p.x=Math.random()*c.width;}}x.globalAlpha=.35;x.fillStyle='#ff8fb1';x.font=p.r+'px serif';x.globalAlpha=p.t>3?.55:.35;x.fillText(p.t>3?'🌹':'♥',p.x+(still?0:Math.sin(t/1200+p.t)*12),p.y);});
+  hearts=hearts.filter(h=>h.a>0);hearts.forEach(h=>{h.x+=h.vx;h.y+=h.vy;h.vy+=.2;h.a-=.012;x.globalAlpha=Math.max(h.a,0);x.fillStyle=h.c;x.font=h.s+'px serif';x.fillText(h.r?'🌹':'♥',h.x,h.y);});
+  x.globalAlpha=1;requestAnimationFrame(loop);}
+requestAnimationFrame(loop);
+render();
+</script>
+</body></html>
